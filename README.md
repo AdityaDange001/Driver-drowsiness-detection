@@ -1,83 +1,86 @@
-
 # Driver Drowsiness Detection System
 
-## 1. Project Overview
+A real-time driver drowsiness detection prototype built using Python, OpenCV, MediaPipe, and Flask. The system monitors facial landmarks to detect prolonged eye closure and possible yawning, generates audible warnings, logs events, and displays detection information on a web dashboard.
 
-The Driver Drowsiness Detection System is a computer-vision-based project designed to detect signs of driver drowsiness and yawning using a webcam.
+> **Project type:** Student project / Educational prototype  
+> **Status:** Core software implemented; hardware integration and further validation pending.
 
-When signs of drowsiness are detected, the system activates an audible warning. It also records detected events in an SQLite database and displays the information on a web dashboard.
+## Overview
 
-This is a student prototype intended for learning and demonstration.
+Driver drowsiness can reduce attention and reaction time. This project explores a computer-vision-based approach to identifying possible signs of drowsiness through a webcam.
 
-## 2. Project Objectives
+The system analyzes facial landmarks, checks eye closure and mouth opening, generates warnings when configured conditions are met, and records detected events in an SQLite database.
 
-- Detect eye closure using facial landmarks.
-- Identify possible drowsiness.
-- Detect yawning using facial features.
-- Generate an audible warning.
-- Store detected events and timestamps in a database.
-- Display event counts and history on a web dashboard.
-- Prepare the software for future ESP32 and external buzzer integration.
+## Features
 
-## 3. Technologies Used
+- **Eye Closure Detection:** Uses MediaPipe facial landmarks to monitor eye closure.
+- **Drowsiness Warning:** Activates an audible alarm when the configured detection condition is met.
+- **Yawning Detection:** Estimates mouth opening using facial landmarks to identify possible yawning.
+- **Event Logging:** Stores detection events and timestamps in SQLite.
+- **Web Dashboard:** Displays event counts, current detection status, and recent event history.
+- **Live Status Updates:** Shares detection status with the dashboard through a JSON file.
+- **Modular Design:** Separates detection, event logging, and dashboard functionality.
 
-- Python
-- OpenCV
-- MediaPipe Tasks
-- NumPy
-- Flask
-- SQLite
-- HTML and CSS
-- JSON
-- ESP32 (planned hardware integration)
+## Technologies Used
 
-## 4. Main Features
+| Technology | Purpose |
+|---|---|
+| Python | Core application logic |
+| OpenCV | Webcam access and image processing |
+| MediaPipe Tasks | Facial landmark detection |
+| NumPy | Numerical calculations |
+| Flask | Web dashboard |
+| SQLite | Event storage |
+| HTML and CSS | Dashboard interface |
+| JSON | Detection status communication |
 
-### Eye Closure Detection
-Uses facial landmarks to monitor eye closure and identify possible drowsiness.
+## Project Structure
 
-### Alarm System
-Generates an audible warning when the configured drowsiness condition is met.
-
-### Yawning Detection
-Uses facial landmarks to estimate mouth opening and detect possible yawning.
-
-### Event Logging
-Stores drowsiness warnings and yawning events in an SQLite database.
-
-### Web Dashboard
-Displays the current detection status, event counts, and recent event history.
-
-### Live Status
-Uses a JSON file to share detection status between the detection program and dashboard.
-
-## 5. Project Files
-
-- `main.py` — standalone eye-closure detection.
-- `yawn_test.py` — yawning detection test.
-- `database_test.py` — database functionality test.
-- `integrated_system.py` — integrated webcam detection, alarm, and event logging.
-- `app.py` — Flask web dashboard.
-- `face_landmarker.task` — MediaPipe face-landmarker model.
-- `drowsiness.db` — SQLite database.
-- `system_status.json` — latest detection status, when generated.
-- `README.md` — project documentation.
-
-## 6. Requirements
-
-Install Python and ensure that the webcam is available.
-
-Install the required packages using:
-
-```bash
-py -m pip install opencv-python mediapipe numpy flask requests
+```text
+DriverDrowsinessProject/
+├── main.py
+├── integrated_system.py
+├── app.py
+├── esp32_bridge.py
+├── database_test.py
+├── yawn_test.py
+├── check_db.py
+├── face_landmarker.task
+├── requirements.txt
+├── README.md
+├── drowsiness.db
+└── system_status.json
 ```
 
-## 7. How to Run
+**Important:** The SQLite database and generated status file are created or updated locally when the application runs. They are excluded from version control.
 
-Open the project folder in VS Code.
+## Getting Started
 
-### Terminal 1: Start Detection
+### Prerequisites
+
+- Windows PC or laptop
+- Python installed and accessible using the `py` command
+- A working webcam
+- Git (optional, for cloning the repository)
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/AdityaDange001/Driver-drowsiness-detection.git
+cd Driver-drowsiness-detection
+```
+
+Alternatively, download the repository as a ZIP file from GitHub.
+
+### 2. Install Dependencies
+
+```bash
+py -m pip install -r requirements.txt
+```
+
+### 3. Start the Detection System
+
+Open a terminal in the project folder and run:
 
 ```bash
 py integrated_system.py
@@ -85,41 +88,54 @@ py integrated_system.py
 
 Allow webcam access if prompted.
 
-### Terminal 2: Start the Dashboard
+### 4. Start the Web Dashboard
 
-Open a second terminal and run:
+Open a second terminal in the same project folder and run:
 
 ```bash
 py app.py
 ```
 
-Open this address in your browser:
+Open the dashboard in your browser:
 
 http://127.0.0.1:5000
 
-Keep both terminals running while using the system.
+Keep both terminals running while using the integrated system. To stop a program, press `Ctrl + C` in its terminal.
 
-To stop either program, select its terminal and press `Ctrl + C`.
+## How It Works
 
-## 8. Database
+1. The webcam captures video frames.
+2. MediaPipe detects facial landmarks.
+3. The application analyzes eye closure and mouth opening.
+4. Configured detection conditions determine when a warning or event should be triggered.
+5. Events are recorded in the SQLite database.
+6. The Flask dashboard displays the available status and event history.
 
-The SQLite database stores detected events, including event type and timestamp.
+## Database and Monitoring
 
-The dashboard displays the total number of drowsiness warnings, yawning events, total recorded events, and recent event history.
+The SQLite database stores detected event types and timestamps. The dashboard presents event counts and recent history based on the recorded data.
 
-## 9. Future Enhancements
+The database and live status file are local application data and are not included in the repository.
+
+## Future Improvements
 
 - Integrate an ESP32 with an external buzzer.
-- Improve detection accuracy under different lighting conditions.
-- Add configurable warning thresholds.
-- Improve error handling and testing.
-- Add exportable event reports.
-- Evaluate performance under controlled test conditions.
+- Improve robustness under different lighting conditions.
+- Add configurable detection thresholds.
+- Expand testing and error handling.
+- Add downloadable event reports.
+- Evaluate detection performance under controlled conditions.
 
-## 10. Safety Disclaimer
+## Safety Disclaimer
 
-This project is an educational prototype. It has not been validated as a safety-critical driver-monitoring system and must not be relied upon while driving.
+This project is an educational prototype and has not been validated as a safety-critical driver-monitoring system. Detection may produce false positives or miss signs of drowsiness. **Do not rely on this system as a substitute for adequate rest or safe driving practices.**
 
-## 11. Project Status
+## Author
 
-Core software features have been implemented. Final testing, hardware integration, and validation remain pending.
+**Aditya Dange**
+
+GitHub: [@AdityaDange001](https://github.com/AdityaDange001)
+
+## License
+
+No license has been added yet. Unless a license is selected, others do not automatically receive permission to reuse or redistribute the project's code.
